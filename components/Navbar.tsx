@@ -4,13 +4,16 @@ import Logo from "@/components/Logo";
 import {Disclosure, Menu, Transition} from '@headlessui/react'
 import userStore from "@/stores/userStore";
 import Dinosaur from "@/public/dinosour.svg"
+import Link from "next/link";
+import {usePathname} from "next/navigation";
+import Image from "next/image";
 
 
 const navigation = [
-  {name: 'Dashboard', href: '#', current: true},
-  {name: 'Team', href: '#', current: false},
-  {name: 'Projects', href: '#', current: false},
-  {name: 'Calendar', href: '#', current: false},
+  {name: 'Dashboard', href: '/dashboard'},
+  {name: 'Team', href: '#'},
+  {name: 'Projects', href: '#'},
+  {name: 'Calendar', href: '#'},
 ]
 
 function classNames(...classes: string[]) {
@@ -20,6 +23,8 @@ function classNames(...classes: string[]) {
 // TODO: Validation using zod and react-hook-form
 export default function Navbar() {
   const user = userStore((state) => state)
+
+  const pathname = usePathname()
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -49,23 +54,25 @@ export default function Navbar() {
                 </Disclosure.Button>
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center hidden sm:block">
-                  <Logo/>
+                <div className="sm:flex flex-shrink-0 items-center hidden">
+                  <Link href={"/"}>
+                    <Logo/>
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          pathname === item.href ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium uppercase'
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={pathname === item.href ? 'page' : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -94,7 +101,7 @@ export default function Navbar() {
                         <span className="absolute -inset-1.5"/>
                         <span className="sr-only">Open user menu</span>
                         {/*Draw few samples of pixel avatar pictures*/}
-                        <img
+                        <Image
                           className="h-8 w-8 rounded-full bg-black"
                           src={user.avatar || Dinosaur.src}
                           alt=""
@@ -164,13 +171,13 @@ export default function Navbar() {
               {navigation.map((item) => (
                 <Disclosure.Button
                   key={item.name}
-                  as="a"
+                  as="link"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    pathname? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={pathname ? 'page' : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>

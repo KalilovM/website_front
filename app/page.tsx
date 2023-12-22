@@ -1,9 +1,8 @@
 "use client"
-import AuthForm from "@/components/AuthForm";
 
 
 export default function home() {
   return (
-    <AuthForm/>
+    <h1 className="text-white text-center text-9xl">Home page</h1>
   )
 }
