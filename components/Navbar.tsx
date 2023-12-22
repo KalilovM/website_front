@@ -102,6 +102,8 @@ export default function Navbar() {
                         <span className="sr-only">Open user menu</span>
                         {/*Draw few samples of pixel avatar pictures*/}
                         <Image
+                          width={32}
+                          height={32}
                           className="h-8 w-8 rounded-full bg-black"
                           src={user.avatar || Dinosaur.src}
                           alt=""
