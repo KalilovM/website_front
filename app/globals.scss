@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$pixelWidth : 3px;
+$pixelWidthAlt : -3px;
+$pixelBorderColor : #b6a695;
+$pixelHighlightColor : #e7e7e7;
+$pixelShadowColor : rgba(0 , 0, 0, 0.1);
+
+.pixelsTop {
+    display: block;
+    content: '';
+    position: absolute;
+    width: $pixelWidth;
+    height: $pixelWidth;
+    top: 0;
+}
+
+.pixelsBottom {
+    display: block;
+    content: '';
+    position: absolute;
+    width: $pixelWidth;
+    height: $pixelWidth;
+    top: 0;
+}
+
+@mixin make_box($bg, $borderColor, $highlightColor, $shadowColor) {
+    background: $bg;
+    box-shadow: 0px $pixelWidth $highlightColor, 0px $pixelWidthAlt $bg, $pixelWidth 0px $bg, $pixelWidthAlt 0px $bg, 0px $pixelWidthAlt * 2 $borderColor, 0px $pixelWidth * 2 $borderColor, $pixelWidth * 2 0px $borderColor, $pixelWidthAlt * 2 0px $borderColor, $pixelWidth * 3 0px $shadowColor, 0px $pixelWidth * 3 $shadowColor;
+    padding: 12px;
+
+    & .pixelsBottom {
+        width: calc(100% + #{$pixelWidth * 4});
+        position: absolute;
+        left: -$pixelWidth * 2;
+        bottom: 0;
+
+        &::after {
+            @extend .pixelsTop;
+
+            right: $pixelWidth;
+            top: -$pixelWidth;
+            background: $highlightColor;
+            box-shadow: 0px $pixelWidth $borderColor, 0px $pixelWidth * 2 $shadowColor, $pixelWidth $pixelWidth $shadowColor;
+        }
+
+        &::before {
+            @extend .pixelsBottom;
+
+            left: $pixelWidth;
+            top: -$pixelWidth;
+            background: $highlightColor;
+            box-shadow: 0px $pixelWidth $borderColor, 0px $pixelWidth * 2 $shadowColor, $pixelWidthAlt $pixelWidth $shadowColor;
+        }
+    }
+
+    & .pixelsTop {
+        width: calc(100% + #{$pixelWidth * 4});
+        position: absolute;
+        left: -$pixelWidth * 2;
+        top: -$pixelWidth;
+
+        &::after {
+            @extend .pixelsTop;
+
+            right: $pixelWidth;
+            background: $borderColor;
+        }
+
+        &::before {
+            @extend .pixelsTop;
+
+            left: 3px;
+            background: $borderColor;
+        }
+    }
+}
+
+.box {
+    @include make_box(white, $pixelBorderColor, $pixelHighlightColor, $pixelShadowColor);
+}
+
+.box-orange {
+    @include make_box(#fcab0b, #e8861c, #fdbc3d, $pixelShadowColor);
+}
+
+html {
+    @apply h-full bg-gray-900;
+    //background: #333;
+}
+body {
+    @apply h-full;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, label, a, button {
+    @apply uppercase;
+}

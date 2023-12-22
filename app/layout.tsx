@@ -1,8 +1,16 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type {Metadata} from 'next'
+import localFont from 'next/font/local'
+import Navbar from '@/components/Navbar'
+import './globals.scss'
 
-const inter = Inter({ subsets: ['latin'] })
+const pixel = localFont({
+  src: './pixels.ttf',
+  variable: "--font-pixel"
+})
+const pixelHeading = localFont({
+  src: './pixelHeading.otf',
+  variable: "--font-pixel-heading",
+})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -10,13 +18,17 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children,
-}: {
+                                     children,
+                                   }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={`${pixel.variable} ${pixelHeading.variable}`}>
+    <body>
+    <header>
+      <Navbar/>
+    </header>
+    {children}</body>
     </html>
-  )
+  );
 }

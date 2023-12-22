@@ -1,27 +1,110 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.pixelsTop, .box-orange .pixelsTop::before, .box-orange .pixelsTop::after, .box-orange .pixelsBottom::after, .box .pixelsTop::before, .box .pixelsTop::after, .box .pixelsBottom::after {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  top: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.pixelsBottom, .box-orange .pixelsBottom::before, .box .pixelsBottom::before {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  top: 0;
+}
+
+.box {
+  background: white;
+  box-shadow: 0px 3px #e7e7e7, 0px -3px white, 3px 0px white, -3px 0px white, 0px -6px #b6a695, 0px 6px #b6a695, 6px 0px #b6a695, -6px 0px #b6a695, 9px 0px rgba(0, 0, 0, 0.1), 0px 9px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+}
+.box .pixelsBottom, .box .pixelsBottom::before {
+  width: calc(100% + 12px);
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+}
+.box .pixelsBottom::after {
+  right: 3px;
+  top: -3px;
+  background: #e7e7e7;
+  box-shadow: 0px 3px #b6a695, 0px 6px rgba(0, 0, 0, 0.1), 3px 3px rgba(0, 0, 0, 0.1);
+}
+.box .pixelsBottom::before {
+  left: 3px;
+  top: -3px;
+  background: #e7e7e7;
+  box-shadow: 0px 3px #b6a695, 0px 6px rgba(0, 0, 0, 0.1), -3px 3px rgba(0, 0, 0, 0.1);
+}
+.box .pixelsTop, .box .pixelsTop::before, .box .pixelsTop::after, .box .pixelsBottom::after {
+  width: calc(100% + 12px);
+  position: absolute;
+  left: -6px;
+  top: -3px;
+}
+.box .pixelsTop::after, .box .pixelsBottom::after {
+  right: 3px;
+  background: #b6a695;
+}
+.box .pixelsTop::before {
+  left: 3px;
+  background: #b6a695;
+}
+
+.box-orange {
+  background: #fcab0b;
+  box-shadow: 0px 3px #fdbc3d, 0px -3px #fcab0b, 3px 0px #fcab0b, -3px 0px #fcab0b, 0px -6px #e8861c, 0px 6px #e8861c, 6px 0px #e8861c, -6px 0px #e8861c, 9px 0px rgba(0, 0, 0, 0.1), 0px 9px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+}
+.box-orange .pixelsBottom, .box-orange .pixelsBottom::before {
+  width: calc(100% + 12px);
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+}
+.box-orange .pixelsBottom::after {
+  right: 3px;
+  top: -3px;
+  background: #fdbc3d;
+  box-shadow: 0px 3px #e8861c, 0px 6px rgba(0, 0, 0, 0.1), 3px 3px rgba(0, 0, 0, 0.1);
+}
+.box-orange .pixelsBottom::before {
+  left: 3px;
+  top: -3px;
+  background: #fdbc3d;
+  box-shadow: 0px 3px #e8861c, 0px 6px rgba(0, 0, 0, 0.1), -3px 3px rgba(0, 0, 0, 0.1);
+}
+.box-orange .pixelsTop, .box-orange .pixelsTop::before, .box-orange .pixelsTop::after, .box-orange .pixelsBottom::after {
+  width: calc(100% + 12px);
+  position: absolute;
+  left: -6px;
+  top: -3px;
+}
+.box-orange .pixelsTop::after, .box-orange .pixelsBottom::after {
+  right: 3px;
+  background: #e8861c;
+}
+.box-orange .pixelsTop::before {
+  left: 3px;
+  background: #e8861c;
+}
+
+html {
+  @apply h-full bg-gray-900;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  @apply h-full;
 }
+
+h1, h2, h3, h4, h5, h6, p, span, label, a, button {
+  @apply uppercase;
+}
+
+/*# sourceMappingURL=globals.css.map */

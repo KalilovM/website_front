@@ -1,0 +1,9 @@
+.logo {
+  font-family: var(--font-pixel-heading);
+  font-size: 42px;
+  line-height: 30px;
+  padding-bottom: 6px;
+  @apply text-indigo-600;
+}
+
+/*# sourceMappingURL=Logo.module.css.map */
