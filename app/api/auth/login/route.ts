@@ -12,7 +12,7 @@ type LoginResponse = {
   email: string;
 }
 
-type tokenType = {
+export type tokenType = {
   token_type: "access" | "refresh";
   exp: number,
   iat: number,
@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
   const accessTokenPayload = jwtDecode<tokenType>(res.tokens.access);
   const refreshTokenPayload = jwtDecode<tokenType>(res.tokens.refresh);
   // TODO: add path and secure to cookies
-  cookies().set(accessTokenPayload.token_type, res.tokens.access, {expires: new Date(accessTokenPayload.exp * 1000), httpOnly: true, sameSite: "strict"});
-  cookies().set(refreshTokenPayload.token_type, res.tokens.refresh, {expires: new Date(refreshTokenPayload.exp * 1000), httpOnly: true, sameSite: "strict"});
+  cookies().set(accessTokenPayload.token_type, res.tokens.access, {expires: new Date(accessTokenPayload.exp * 1000), httpOnly: true, sameSite: "strict", path: "/"});
+  cookies().set(refreshTokenPayload.token_type, res.tokens.refresh, {expires: new Date(refreshTokenPayload.exp * 1000), httpOnly: true, sameSite: "strict", path: "/"});
   // decode header by passing in options (useful for when you need `kid` to verify a JWT):
   // const decodedHeader = jwtDecode(token, { header: true });
 

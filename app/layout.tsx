@@ -1,7 +1,10 @@
 import type {Metadata} from 'next'
 import localFont from 'next/font/local'
 import Navbar from '@/components/Navbar'
+import Providers from "@/app/utils/Providers";
 import './globals.scss'
+import React from "react";
+
 
 const pixel = localFont({
   src: './pixels.ttf',
@@ -25,10 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pixel.variable} ${pixelHeading.variable}`}>
     <body>
+    <Providers>
     <header>
       <Navbar/>
     </header>
-    {children}</body>
+      {children}
+    </Providers>
+    </body>
     </html>
   );
 }

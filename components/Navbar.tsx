@@ -1,5 +1,6 @@
 "use client"
-import {Fragment} from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {Fragment} from 'react'
 import Logo from "@/components/Logo";
 import {Disclosure, Menu, Transition} from '@headlessui/react'
 import userStore from "@/stores/userStore";
@@ -7,6 +8,8 @@ import Dinosaur from "@/public/dinosour.svg"
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import Image from "next/image";
+import {useQuery} from "@tanstack/react-query";
+import {responseType} from "@/app/api/auth/me/route";
 
 
 const navigation = [
@@ -20,10 +23,35 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-// TODO: Validation using zod and react-hook-form
 export default function Navbar() {
   const user = userStore((state) => state)
+  // TODO: there should be better solution for this
+ useQuery({
+    queryKey: ["me"], queryFn: () =>
+      fetch("/api/auth/me", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(async (res) => {
+        const result = await res.json()
+        if (res.status === 200) {
+          return result
+        } else {
+          throw new Error(result.error)
+        }
+      }).then((res: responseType) => {
+        console.log("hello")
+        console.log(res)
+        user.login(res.username, res.email, res.avatar)
+        return res
+      }).catch((err) => {
+        console.log("error")
+        console.log(err)
+      })
+  })
 
+  // TODO: fix loading user on client side
   const pathname = usePathname()
 
   return (
@@ -78,22 +106,22 @@ export default function Navbar() {
                 </div>
               </div>
               {user.isAuthenticated ? (
-              <div
-                className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5"/>
-                  <span className="sr-only">View notifications</span>
-                  <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
-                    <path
-                      d="M14 4V2h-4v2H5v2h14V4h-5zm5 12H5v-4H3v6h5v4h2v-4h4v2h-4v2h6v-4h5v-6h-2V6h-2v8h2v2zM5 6v8h2V6H5z"
-                      fill="currentColor"/>
-                  </svg>
-                </button>
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <button
+                    type="button"
+                    className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  >
+                    <span className="absolute -inset-1.5"/>
+                    <span className="sr-only">View notifications</span>
+                    <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6">
+                      <path
+                        d="M14 4V2h-4v2H5v2h14V4h-5zm5 12H5v-4H3v6h5v4h2v-4h4v2h-4v2h6v-4h5v-6h-2V6h-2v8h2v2zM5 6v8h2V6H5z"
+                        fill="currentColor"/>
+                    </svg>
+                  </button>
 
-                {/* Profile dropdown */}
+                  {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
                       <Menu.Button
@@ -155,8 +183,8 @@ export default function Navbar() {
                     </Transition>
                   </Menu>
 
-              </div>
-                ): (
+                </div>
+              ) : (
 
                 <a
                   href="/auth/signin"
@@ -176,7 +204,7 @@ export default function Navbar() {
                   as="link"
                   href={item.href}
                   className={classNames(
-                    pathname? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                    pathname ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                     'block rounded-md px-3 py-2 text-base font-medium'
                   )}
                   aria-current={pathname ? 'page' : undefined}
